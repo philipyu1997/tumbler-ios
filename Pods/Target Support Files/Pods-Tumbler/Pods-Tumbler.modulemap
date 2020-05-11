@@ -1,0 +1,6 @@
+framework module Pods_Tumbler {
+  umbrella header "Pods-Tumbler-umbrella.h"
+
+  export *
+  module * { export * }
+}
