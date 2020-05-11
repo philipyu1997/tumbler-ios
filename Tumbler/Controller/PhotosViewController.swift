@@ -9,81 +9,101 @@
 import UIKit
 import AlamofireImage
 
-class PhotosViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class PhotosViewController: UIViewController {
     
+    // Outlets
     @IBOutlet weak var tableView: UITableView!
-    var posts: [[String: Any]] = []
+    
+    // Properties
+    private let url = URL(string: "https://api.tumblr.com/v2/blog/humansofnewyork.tumblr.com/posts/photo?api_key=***REMOVED***")!
+    private var posts: [[String: Any]] = []
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
-        tableView.delegate = self
+        // Set up data source and delegate
         tableView.dataSource = self
+        tableView.delegate = self
         
-        // Do any additional setup after loading the view.
-        print("Hello Universe")
+        fetchPost()
+        
+    }
+    
+    func fetchPost() {
         
         // Network request snippet
-        let url = URL(string: "https://api.tumblr.com/v2/blog/humansofnewyork.tumblr.com/posts/photo?api_key=***REMOVED***")!
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         session.configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
-        let task = session.dataTask(with: url) { (data, response, error) in
+        let task = session.dataTask(with: url) { (data, _, error) in
             if let error = error {
                 print(error.localizedDescription)
-            } else if let data = data,
-                let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+            } else {
                 
-                // Get the dictionary from the response key
-                let responseDictionary = dataDictionary["response"] as! [String: Any]
-                // Store the returned array of dictionaries in our posts property
-                self.posts = responseDictionary["posts"] as! [[String: Any]]
+                do {
+                    if let data = data,
+                        let dataDictionary = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                        
+                        // Get the dictionary from the response key
+                        if let responseDictionary = dataDictionary["response"] as? [String: Any] {
+                            // Store the returned array of dictionaries in our posts property
+                            guard let post = responseDictionary["posts"] as? [[String: Any]] else {
+                                fatalError("Failed to get posts.")
+                            }
+                            
+                            self.posts = post
+                        }
+                    }
+                } catch {
+                    print(error)
+                }
                 
-//                print(dataDictionary)
+                // Get the posts and store in posts property
                 
-                // TODO: Get the posts and store in posts property
-                
-                // TODO: Reload the table view
+                // Reload the table view
                 self.tableView.reloadData()
             }
         }
+        
         task.resume()
+        
     }
     
+}
+
+// MARK: Table View Data Source and Delegate Section
+
+extension PhotosViewController: UITableViewDataSource, UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         return posts.count
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = UITableViewCell()
-//        cell.textLabel?.text = "This is row \(indexPath.row)"
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
+        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoCell", for: indexPath) as? PhotoCell else {
+            fatalError("Failed to set cell as PhotoCell")
+        }
         let post = posts[indexPath.row]
         
         if let photos = post["photos"] as? [[String: Any]] {
-            // photos is NOT nil, we can use it!
-            // TODO: Get the photo url
-            // 1.
+            // Get the photo url
             let photo = photos[0]
-            // 2.
-            let originalSize = photo["original_size"] as! [String: Any]
-            // 3.
-            let urlString = originalSize["url"] as! String
-            // 4.
+            guard let originalSize = photo["original_size"] as? [String: Any] else {
+                fatalError("Failed to get original size photo")
+            }
+            guard let urlString = originalSize["url"] as? String else {
+                fatalError("Failed to get url for original size photo")
+            }
             let url = URL(string: urlString)
+            
             cell.photoImageView.af.setImage(withURL: url!)
         }
         
         return cell
+        
     }
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
 }
