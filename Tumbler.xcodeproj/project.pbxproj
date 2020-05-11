@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -50,13 +50,39 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		72656082222B7676005C26FD /* Storyboards */ = {
+		7230B3472469200A00CC9018 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				72656083222B7683005C26FD /* Cells */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		7230B3482469201C00CC9018 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				72B91A18222B6F66006C31FF /* Main.storyboard */,
 				72B91A1D222B6F68006C31FF /* LaunchScreen.storyboard */,
+				72B91A1B222B6F68006C31FF /* Assets.xcassets */,
 			);
-			path = Storyboards;
+			path = View;
+			sourceTree = "<group>";
+		};
+		7230B3492469203B00CC9018 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				72B91A14222B6F66006C31FF /* AppDelegate.swift */,
+				72B91A42222B6FC1006C31FF /* PhotosViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		7230B34A2469204A00CC9018 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				72B91A20222B6F68006C31FF /* Info.plist */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		72656083222B7683005C26FD /* Cells */ = {
@@ -65,14 +91,6 @@
 				72B91A44222B729E006C31FF /* PhotoCell.swift */,
 			);
 			path = Cells;
-			sourceTree = "<group>";
-		};
-		72656084222B768C005C26FD /* View Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				72B91A42222B6FC1006C31FF /* PhotosViewController.swift */,
-			);
-			path = "View Controllers";
 			sourceTree = "<group>";
 		};
 		72B91A08222B6F66006C31FF = {
@@ -96,12 +114,10 @@
 		72B91A13222B6F66006C31FF /* Tumbler */ = {
 			isa = PBXGroup;
 			children = (
-				72656084222B768C005C26FD /* View Controllers */,
-				72656083222B7683005C26FD /* Cells */,
-				72656082222B7676005C26FD /* Storyboards */,
-				72B91A14222B6F66006C31FF /* AppDelegate.swift */,
-				72B91A1B222B6F68006C31FF /* Assets.xcassets */,
-				72B91A20222B6F68006C31FF /* Info.plist */,
+				7230B3492469203B00CC9018 /* Controller */,
+				7230B3472469200A00CC9018 /* Model */,
+				7230B34A2469204A00CC9018 /* Supporting Files */,
+				7230B3482469201C00CC9018 /* View */,
 			);
 			path = Tumbler;
 			sourceTree = "<group>";
@@ -112,7 +128,6 @@
 				67E9753D4DA0F3E9587B5A10 /* Pods-Tumbler.debug.xcconfig */,
 				927D7FF877C64C342FD3B883 /* Pods-Tumbler.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -382,7 +397,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8E7FB8SA95;
-				INFOPLIST_FILE = Tumbler/Info.plist;
+				INFOPLIST_FILE = "Tumbler/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -402,7 +417,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8E7FB8SA95;
-				INFOPLIST_FILE = Tumbler/Info.plist;
+				INFOPLIST_FILE = "Tumbler/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
