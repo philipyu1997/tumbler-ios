@@ -15,7 +15,14 @@ class PhotosViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     // Properties
-    private let url = URL(string: "https://api.tumblr.com/v2/blog/humansofnewyork.tumblr.com/posts/photo?api_key=***REMOVED***")!
+    private let API_KEY = fetchFromPlist(forResource: "ApiKeys", forKey: "API_KEY")
+    private var url: URL {
+        guard let apiKey = API_KEY else {
+            fatalError("Error fetching API Key. Make sure you have the correct key name")
+        }
+        
+        return URL(string: "https://api.tumblr.com/v2/blog/humansofnewyork.tumblr.com/posts/photo?api_key=\(apiKey)")!
+    }
     private var posts: [[String: Any]] = []
     
     override func viewDidLoad() {
@@ -103,6 +110,12 @@ extension PhotosViewController: UITableViewDataSource, UITableViewDelegate {
         }
         
         return cell
+        
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        return 300
         
     }
     

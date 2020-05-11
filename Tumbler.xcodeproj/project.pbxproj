@@ -13,6 +13,8 @@
 		72B91A1F222B6F68006C31FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72B91A1D222B6F68006C31FF /* LaunchScreen.storyboard */; };
 		72B91A43222B6FC1006C31FF /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B91A42222B6FC1006C31FF /* PhotosViewController.swift */; };
 		72B91A45222B729E006C31FF /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B91A44222B729E006C31FF /* PhotoCell.swift */; };
+		72DC2388246929080051BAA9 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DC2387246929080051BAA9 /* Key.swift */; };
+		72DC238A246929260051BAA9 /* ApiKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 72DC2389246929260051BAA9 /* ApiKeys.plist */; };
 		CF4FA0E759062403D3712E19 /* Pods_Tumbler.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4431FAC3AD3A30C2F15D8BD5 /* Pods_Tumbler.framework */; };
 /* End PBXBuildFile section */
 
@@ -27,6 +29,8 @@
 		72B91A20222B6F68006C31FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		72B91A42222B6FC1006C31FF /* PhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
 		72B91A44222B729E006C31FF /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
+		72DC2387246929080051BAA9 /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
+		72DC2389246929260051BAA9 /* ApiKeys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ApiKeys.plist; sourceTree = "<group>"; };
 		927D7FF877C64C342FD3B883 /* Pods-Tumbler.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tumbler.release.xcconfig"; path = "Target Support Files/Pods-Tumbler/Pods-Tumbler.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -54,6 +58,7 @@
 			isa = PBXGroup;
 			children = (
 				72656083222B7683005C26FD /* Cells */,
+				72DC2387246929080051BAA9 /* Key.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -81,6 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				72B91A20222B6F68006C31FF /* Info.plist */,
+				72DC2389246929260051BAA9 /* ApiKeys.plist */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -193,6 +199,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				72B91A1F222B6F68006C31FF /* LaunchScreen.storyboard in Resources */,
+				72DC238A246929260051BAA9 /* ApiKeys.plist in Resources */,
 				72B91A1C222B6F68006C31FF /* Assets.xcassets in Resources */,
 				72B91A1A222B6F66006C31FF /* Main.storyboard in Resources */,
 			);
@@ -266,6 +273,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				72B91A43222B6FC1006C31FF /* PhotosViewController.swift in Sources */,
+				72DC2388246929080051BAA9 /* Key.swift in Sources */,
 				72B91A45222B729E006C31FF /* PhotoCell.swift in Sources */,
 				72B91A15222B6F66006C31FF /* AppDelegate.swift in Sources */,
 			);

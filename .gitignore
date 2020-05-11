@@ -116,3 +116,6 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Secrets
+ApiKeys.plist
