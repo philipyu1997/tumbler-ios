@@ -62,7 +62,6 @@ class PhotosViewController: UIViewController {
                         }
                     }
                 } catch {
-                    print(error)
                 }
                 
                 // Get the posts and store in posts property
@@ -76,15 +75,40 @@ class PhotosViewController: UIViewController {
         
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        guard let detailsViewController = segue.destination as? PhotoDetailsViewController else {
+            fatalError("Failed to set segue destination as PhotoDetailsViewController")
+        }
+        guard let cell = sender as? UITableViewCell else {
+            fatalError("Failed to set sender as UITableViewCell")
+        }
+        
+        // Find the selected photo
+        let indexPath = tableView.indexPath(for: cell)!
+        let post = posts[indexPath.row]
+        
+        // Pass the selected photo to the details view controller
+        detailsViewController.post = post
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+    }
+    
 }
 
 // MARK: Table View Data Source and Delegate Section
 
 extension PhotosViewController: UITableViewDataSource, UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         
         return posts.count
+        
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return 1
         
     }
     
@@ -93,7 +117,7 @@ extension PhotosViewController: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoCell", for: indexPath) as? PhotoCell else {
             fatalError("Failed to set cell as PhotoCell")
         }
-        let post = posts[indexPath.row]
+        let post = posts[indexPath.section]
         
         if let photos = post["photos"] as? [[String: Any]] {
             // Get the photo url
@@ -113,9 +137,45 @@ extension PhotosViewController: UITableViewDataSource, UITableViewDelegate {
         
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        return 300
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: 50))
+        headerView.backgroundColor = UIColor(white: 1, alpha: 0.9)
+
+        let profileView = UIImageView(frame: CGRect(x: 10, y: 10, width: 30, height: 30))
+        profileView.clipsToBounds = true
+        profileView.layer.cornerRadius = 15
+        profileView.layer.borderColor = UIColor(white: 0.7, alpha: 0.8).cgColor
+        profileView.layer.borderWidth = 1
+        
+        let dateView = UITextView(frame: CGRect(x: 50, y: 10, width: 300, height: 40))
+        dateView.clipsToBounds = true
+
+        // Set the avatar
+        profileView.af.setImage(withURL: URL(string: "https://api.tumblr.com/v2/blog/humansofnewyork.tumblr.com/avatar")!)
+        headerView.addSubview(profileView)
+
+        // Set the date
+        let post = posts[section]
+        
+        if let date = post["date"] as? String {
+            dateView.text = date
+            headerView.addSubview(dateView)
+        }
+
+        return headerView
+        
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        
+        return 50
+        
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        tableView.deselectRow(at: indexPath, animated: true)
         
     }
     
