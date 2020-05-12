@@ -39,10 +39,6 @@ class FullScreenPhotoViewController: UIViewController {
             gesture.scale = 1
         }
         
-        photoImageView.onSwipeDown { (_) in
-            self.dismiss(animated: true, completion: nil)
-        }
-        
     }
     
     @IBAction func dismissTapped(_ sender: UIButton) {

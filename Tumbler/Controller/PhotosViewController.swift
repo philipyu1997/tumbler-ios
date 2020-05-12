@@ -16,17 +16,12 @@ class PhotosViewController: UIViewController {
     
     // MARK: - Properties
     private let API_KEY = fetchFromPlist(forResource: "ApiKeys", forKey: "API_KEY")
-    private var url: URL {
-        guard let apiKey = API_KEY else {
-            fatalError("Error fetching API Key. Make sure you have the correct key name")
-        }
-        
-        return URL(string: "https://api.tumblr.com/v2/blog/humansofnewyork.tumblr.com/posts/photo?api_key=\(apiKey)")!
-    }
     private var posts: [[String: Any]] = []
     private var refreshControl = UIRefreshControl()
     private var isMoreDataLoading = false
     private var loadingMoreView: InfiniteScrollActivityView?
+    private var offset: Int = 0
+    private var pageNumber: Int = 1
     
     override func viewDidLoad() {
         
@@ -36,7 +31,7 @@ class PhotosViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         
-        fetchPost()
+        fetchPost(with: offset, on: pageNumber)
         
         let frame = CGRect(x: 0, y: tableView.contentSize.height, width: tableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
         loadingMoreView = InfiniteScrollActivityView(frame: frame)
@@ -54,11 +49,14 @@ class PhotosViewController: UIViewController {
     
     // MARK: - Private Functions Section
     
-    @objc private func fetchPost() {
+    @objc private func fetchPost(with offset: Int, on pageNumber: Int) {
         
+        print("on page \(pageNumber) with \(offset + 20) posts")
+        
+        let url = URL(string: "https://api.tumblr.com/v2/blog/humansofnewyork.tumblr.com/posts/photo?api_key=\(API_KEY!)&offset=\(offset)&page_number=\(pageNumber)")
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         session.configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
-        let task = session.dataTask(with: url) { [weak self] (data, _, error) in
+        let task = session.dataTask(with: url!) { [weak self] (data, _, error) in
             self?.isMoreDataLoading = false
             
             if let error = error {
@@ -90,7 +88,9 @@ class PhotosViewController: UIViewController {
     private func refresh() {
         
         run(after: 2) {
-           self.refreshControl.endRefreshing()
+            self.refreshControl.endRefreshing()
+            self.offset = 0
+            self.pageNumber = 1
         }
         
     }
@@ -122,7 +122,7 @@ class PhotosViewController: UIViewController {
             detailsViewController.photoUrl = photoUrl
         }
         
-        detailsViewController.post = posts[indexPath.row]
+        detailsViewController.post = posts[indexPath.section]
         
     }
     
@@ -152,6 +152,11 @@ extension PhotosViewController: UITableViewDataSource, UITableViewDelegate {
             cell.photoImageView.af.setImage(withURL: photoUrl)
         }
         
+        if indexPath.section > offset {
+            offset += 20
+            pageNumber += 1
+        }
+        
         return cell
         
     }
@@ -167,16 +172,13 @@ extension PhotosViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: 50))
-        headerView.backgroundColor = UIColor(white: 1, alpha: 0.9)
+//        headerView.backgroundColor = UIColor()
         
         // Add profile image
         let profileView = UIImageView(frame: CGRect(x: 10, y: 10, width: 30, height: 30))
         
-        profileView.clipsToBounds = true
-        profileView.layer.cornerRadius = 15
-        profileView.layer.borderColor = UIColor(white: 0.7, alpha: 0.8).cgColor
-        profileView.layer.borderWidth = 1
-        profileView.af.setImage(withURL: URL(string: "https://api.tumblr.com/v2/blog/humansofnewyork.tumblr.com/avatar")!)
+        Constants.circularImageView(image: profileView)
+        profileView.af.setImage(withURL: Constants.avatarURL)
         headerView.addSubview(profileView)
         
         // Add date of post
@@ -185,6 +187,7 @@ extension PhotosViewController: UITableViewDataSource, UITableViewDelegate {
         let dateLabel = UILabel()
         
         dateLabel.font = UIFont.systemFont(ofSize: 14)
+        dateLabel.textColor = .white
         dateLabel.text = Constants.convertDateFormatter(date: date)
         dateLabel.sizeToFit()
         dateLabel.frame.origin = CGPoint(x: profileView.frame.maxX + 10, y: 50 / 2 - dateLabel.frame.height / 2)
@@ -219,7 +222,7 @@ extension PhotosViewController: UIScrollViewDelegate {
                 loadingMoreView?.frame = frame
                 loadingMoreView!.startAnimating()
                 
-                fetchPost()
+                fetchPost(with: offset, on: pageNumber)
             }
         }
     }

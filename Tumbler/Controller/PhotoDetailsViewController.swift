@@ -13,9 +13,12 @@ class PhotoDetailsViewController: UIViewController {
     
     // MARK: - Outlets
     @IBOutlet weak var photoImageView: UIImageView!
-    @IBOutlet weak var postTextView: UITextView!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var dateLabel: UILabel!
+    
+    @IBOutlet weak var postTextView: UITextView!
+    @IBOutlet weak var postTextLabel: UILabel!
+    @IBOutlet weak var scrollView: UIScrollView!
     
     // MARK: - Properties
     var photoUrl: URL?
@@ -34,24 +37,16 @@ class PhotoDetailsViewController: UIViewController {
     private func fetchPostDetails() {
         
         if let photoUrl = photoUrl,
-            let reblog = post!["reblog"] as? [String: Any],
+            let caption = post!["caption"] as? String,
             let date = post!["date"] as? String {
-            let comment = reblog["comment"] as! String
-            let parsedComment = parseString(string: comment)
+            let parsedComment = parseString(string: caption)
             
             photoImageView.af.setImage(withURL: photoUrl)
-            circularImageView(image: profileImageView)
-            profileImageView.af.setImage(withURL: URL(string: "https://api.tumblr.com/v2/blog/humansofnewyork.tumblr.com/avatar")!)
+            Constants.circularImageView(image: profileImageView)
+            profileImageView.af.setImage(withURL: Constants.avatarURL)
             dateLabel.text = Constants.convertDateFormatter(date: date)
             postTextView.text = parsedComment
         }
-        
-    }
-    
-    private func circularImageView(image: UIImageView) {
-        
-        image.layer.cornerRadius = (profileImageView?.frame.size.width ?? 0.0) / 2
-        image.clipsToBounds = true
         
     }
     

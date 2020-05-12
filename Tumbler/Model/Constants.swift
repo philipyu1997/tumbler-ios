@@ -6,9 +6,11 @@
 //  Copyright © 2020 Philip Yu. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 struct Constants {
+    
+    static let avatarURL = URL(string: "https://api.tumblr.com/v2/blog/humansofnewyork.tumblr.com/avatar")!
     
     static func convertDateFormatter(date: String) -> String {
         
@@ -27,6 +29,13 @@ struct Constants {
         let timeStamp = dateFormatter.string(from: date)
         
         return timeStamp
+        
+    }
+    
+    static func circularImageView(image: UIImageView) {
+        
+        image.layer.cornerRadius = (image.frame.size.width) / 2
+        image.clipsToBounds = true
         
     }
     
