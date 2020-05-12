@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import GestureRecognizerClosures
 
 class PhotoDetailsViewController: UIViewController {
     
@@ -22,7 +23,26 @@ class PhotoDetailsViewController: UIViewController {
         
         if let photoUrl = photoUrl {
             photoImageView.af.setImage(withURL: photoUrl)
+        }
+        
+        handleGestures()
+        
+    }
+    
+    private func handleGestures() {
+        
+        photoImageView.onTap { (_) in
+            self.performSegue(withIdentifier: "presentFullScreenPhoto", sender: nil)
+        }
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "presentFullScreenPhoto" {
+            let fullScreenViewController = segue.destination as! FullScreenPhotoViewController
             
+            fullScreenViewController.photoUrl = photoUrl
         }
         
     }

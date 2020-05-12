@@ -6,5 +6,6 @@ target 'Tumbler' do
 
   # Pods for Tumbler
   pod 'AlamofireImage'
+  pod 'GestureRecognizerClosures', '~> 5'
 
 end
