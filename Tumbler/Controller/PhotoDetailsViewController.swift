@@ -15,10 +15,7 @@ class PhotoDetailsViewController: UIViewController {
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var dateLabel: UILabel!
-    
     @IBOutlet weak var postTextView: UITextView!
-    @IBOutlet weak var postTextLabel: UILabel!
-    @IBOutlet weak var scrollView: UIScrollView!
     
     // MARK: - Properties
     var photoUrl: URL?

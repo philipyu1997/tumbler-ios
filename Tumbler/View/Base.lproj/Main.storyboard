@@ -165,7 +165,6 @@
                         <outlet property="photoImageView" destination="lUu-aJ-qvd" id="BpW-K9-8hQ"/>
                         <outlet property="postTextView" destination="PBb-SH-xZi" id="Qa8-ai-AJb"/>
                         <outlet property="profileImageView" destination="dOF-Ts-5F7" id="8fz-bC-pHG"/>
-                        <outlet property="scrollView" destination="aff-gv-F2W" id="DmO-K6-aqM"/>
                         <segue destination="7Vq-zy-4WX" kind="presentation" identifier="presentFullScreenPhoto" modalPresentationStyle="currentContext" modalTransitionStyle="crossDissolve" id="a4p-uy-opO"/>
                     </connections>
                 </viewController>
