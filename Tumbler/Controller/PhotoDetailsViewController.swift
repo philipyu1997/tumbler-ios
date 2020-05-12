@@ -13,19 +13,31 @@ class PhotoDetailsViewController: UIViewController {
     
     // MARK: - Outlets
     @IBOutlet weak var photoImageView: UIImageView!
+    @IBOutlet weak var postTextView: UITextView!
     
     // MARK: - Properties
     var photoUrl: URL?
+    var post: [String: Any]?
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
-        if let photoUrl = photoUrl {
+        if let photoUrl = photoUrl, let reblog = post!["reblog"] as? [String: Any] {
+            let comment = reblog["comment"] as! String
+            let parsedComment = parseString(string: comment)
+            
+            postTextView.text = parsedComment
             photoImageView.af.setImage(withURL: photoUrl)
         }
         
         handleGestures()
+        
+    }
+    
+    private func parseString(string: String) -> String {
+        
+        return string.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
         
     }
     

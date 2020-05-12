@@ -34,7 +34,7 @@ class FullScreenPhotoViewController: UIViewController {
         // onPinch
         photoImageView.onPinch { (gesture) in
             let scale = gesture.scale
-            
+        
             self.photoImageView.transform = self.photoImageView.transform.scaledBy(x: scale, y: scale)
             gesture.scale = 1
         }
@@ -46,7 +46,9 @@ class FullScreenPhotoViewController: UIViewController {
     }
     
     @IBAction func dismissTapped(_ sender: UIButton) {
+        
         self.dismiss(animated: true, completion: nil)
+        
     }
     
 }

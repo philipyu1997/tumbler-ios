@@ -25,6 +25,8 @@ class PhotosViewController: UIViewController {
     }
     private var posts: [[String: Any]] = []
     private var refreshControl = UIRefreshControl()
+    private var isMoreDataLoading = false
+    private var loadingMoreView: InfiniteScrollActivityView?
     
     override func viewDidLoad() {
         
@@ -36,23 +38,17 @@ class PhotosViewController: UIViewController {
         
         fetchPost()
         
+        let frame = CGRect(x: 0, y: tableView.contentSize.height, width: tableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
+        loadingMoreView = InfiniteScrollActivityView(frame: frame)
+        loadingMoreView!.isHidden = true
+        tableView.addSubview(loadingMoreView!)
+        
+        var insets = tableView.contentInset
+        insets.bottom += InfiniteScrollActivityView.defaultHeight
+        tableView.contentInset = insets
+        
         refreshControl.addTarget(self, action: #selector(fetchPost), for: .valueChanged)
         tableView.refreshControl = refreshControl
-        
-    }
-    
-    func run(after wait: TimeInterval, closure: @escaping () -> Void) {
-        
-        let queue = DispatchQueue.main
-        queue.asyncAfter(deadline: DispatchTime.now() + wait, execute: closure)
-        
-    }
-    
-    func refresh() {
-        
-        run(after: 2) {
-           self.refreshControl.endRefreshing()
-        }
         
     }
     
@@ -60,29 +56,42 @@ class PhotosViewController: UIViewController {
     
     @objc private func fetchPost() {
         
-        // Network request snippet
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         session.configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
-        let task = session.dataTask(with: url) { (data, _, error) in
+        let task = session.dataTask(with: url) { [weak self] (data, _, error) in
+            self?.isMoreDataLoading = false
+            
             if let error = error {
                 print(error.localizedDescription)
             } else if let data = data,
                 let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                // Get the dictionary from the response key
+                
                 let responseDictionary = dataDictionary["response"] as! [String: Any]
-                // Store the returned array of dictionaries in our posts property
-                let post = responseDictionary["posts"] as! [[String: Any]]
-                self.posts = post
+                let postsToAppend = responseDictionary["posts"] as! [[String: Any]]
+                self?.posts.append(contentsOf: postsToAppend)
+                
+                self?.loadingMoreView!.stopAnimating()
+                self?.tableView.reloadData()
+                self?.refresh()
             }
-            
-            // Get the posts and store in posts property
-            
-            // Reload the table view
-            self.tableView.reloadData()
-            self.refresh()
         }
         
         task.resume()
+        
+    }
+    
+    private func run(after wait: TimeInterval, closure: @escaping () -> Void) {
+        
+        let queue = DispatchQueue.main
+        queue.asyncAfter(deadline: DispatchTime.now() + wait, execute: closure)
+        
+    }
+    
+    private func refresh() {
+        
+        run(after: 2) {
+           self.refreshControl.endRefreshing()
+        }
         
     }
     
@@ -132,6 +141,8 @@ class PhotosViewController: UIViewController {
         if let photoUrl = photoUrl(indexPath: indexPath) {
             detailsViewController.photoUrl = photoUrl
         }
+        
+        detailsViewController.post = posts[indexPath.row]
         
     }
     
@@ -209,12 +220,28 @@ extension PhotosViewController: UITableViewDataSource, UITableViewDelegate {
         
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+}
+
+extension PhotosViewController: UIScrollViewDelegate {
+    
+    // MARK: - UIScrollViewDelegate Section
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
-        if indexPath.row + 1 == posts.count {
-            fetchPost()
+        if !isMoreDataLoading {
+            let scrollViewContentHeight = tableView.contentSize.height
+            let scrollOffsetThreshold = scrollViewContentHeight - tableView.bounds.size.height
+            
+            if scrollView.contentOffset.y > scrollOffsetThreshold && tableView.isDragging {
+                isMoreDataLoading = true
+                
+                let frame = CGRect(x: 0, y: tableView.contentSize.height, width: tableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
+                loadingMoreView?.frame = frame
+                loadingMoreView!.startAnimating()
+                
+                fetchPost()
+            }
         }
-        
     }
     
 }
