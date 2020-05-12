@@ -112,26 +112,6 @@ class PhotosViewController: UIViewController {
         
     }
     
-    private func convertDateFormatter(date: String) -> String {
-        
-        let dateString = date.replacingOccurrences(of: " GMT", with: "")
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        dateFormatter.timeZone = TimeZone(abbreviation: "GMT")
-        
-        guard let date = dateFormatter.date(from: dateString) else {
-            assert(false, "no date from string")
-            return ""
-        }
-        
-        dateFormatter.dateFormat = "MMM dd, yyyy, h:mm a"
-        dateFormatter.timeZone = TimeZone(abbreviation: "GMT")
-        let timeStamp = dateFormatter.string(from: date)
-        
-        return timeStamp
-        
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         let detailsViewController = segue.destination as! PhotoDetailsViewController
@@ -205,7 +185,7 @@ extension PhotosViewController: UITableViewDataSource, UITableViewDelegate {
         let dateLabel = UILabel()
         
         dateLabel.font = UIFont.systemFont(ofSize: 14)
-        dateLabel.text = convertDateFormatter(date: date)
+        dateLabel.text = Constants.convertDateFormatter(date: date)
         dateLabel.sizeToFit()
         dateLabel.frame.origin = CGPoint(x: profileView.frame.maxX + 10, y: 50 / 2 - dateLabel.frame.height / 2)
         headerView.addSubview(dateLabel)

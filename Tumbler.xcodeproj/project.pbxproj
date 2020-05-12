@@ -10,6 +10,7 @@
 		7210F4922469481500191EB5 /* PhotoDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7210F4912469481500191EB5 /* PhotoDetailsViewController.swift */; };
 		72AF6FEA246A6FE6001D0C51 /* ApiKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 72AF6FE9246A6FE6001D0C51 /* ApiKeys.plist */; };
 		72AF6FEC246A70DE001D0C51 /* InfiniteScrollActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AF6FEB246A70DE001D0C51 /* InfiniteScrollActivityView.swift */; };
+		72AF6FEE246A7CF8001D0C51 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AF6FED246A7CF8001D0C51 /* Constants.swift */; };
 		72B4BB9B246A36E700DD39B1 /* FullScreenPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B4BB9A246A36E700DD39B1 /* FullScreenPhotoViewController.swift */; };
 		72B91A15222B6F66006C31FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B91A14222B6F66006C31FF /* AppDelegate.swift */; };
 		72B91A1A222B6F66006C31FF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72B91A18222B6F66006C31FF /* Main.storyboard */; };
@@ -27,6 +28,7 @@
 		7210F4912469481500191EB5 /* PhotoDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailsViewController.swift; sourceTree = "<group>"; };
 		72AF6FE9246A6FE6001D0C51 /* ApiKeys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ApiKeys.plist; sourceTree = "<group>"; };
 		72AF6FEB246A70DE001D0C51 /* InfiniteScrollActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfiniteScrollActivityView.swift; sourceTree = "<group>"; };
+		72AF6FED246A7CF8001D0C51 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		72B4BB9A246A36E700DD39B1 /* FullScreenPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenPhotoViewController.swift; sourceTree = "<group>"; };
 		72B91A11222B6F66006C31FF /* Tumbler.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tumbler.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72B91A14222B6F66006C31FF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 				72656083222B7683005C26FD /* Cells */,
 				72DC2387246929080051BAA9 /* Key.swift */,
 				72AF6FEB246A70DE001D0C51 /* InfiniteScrollActivityView.swift */,
+				72AF6FED246A7CF8001D0C51 /* Constants.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -286,6 +289,7 @@
 				7210F4922469481500191EB5 /* PhotoDetailsViewController.swift in Sources */,
 				72DC2388246929080051BAA9 /* Key.swift in Sources */,
 				72B91A45222B729E006C31FF /* PhotoCell.swift in Sources */,
+				72AF6FEE246A7CF8001D0C51 /* Constants.swift in Sources */,
 				72B4BB9B246A36E700DD39B1 /* FullScreenPhotoViewController.swift in Sources */,
 				72B91A15222B6F66006C31FF /* AppDelegate.swift in Sources */,
 			);
@@ -435,14 +439,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = NQGVFCZJ4J;
+				DEVELOPMENT_TEAM = 8E7FB8SA95;
 				INFOPLIST_FILE = "Tumbler/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "Philip-Yu.Tumbler";
+				PRODUCT_BUNDLE_IDENTIFIER = yu.philip.Tumbler;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -455,14 +459,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = NQGVFCZJ4J;
+				DEVELOPMENT_TEAM = 8E7FB8SA95;
 				INFOPLIST_FILE = "Tumbler/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "Philip-Yu.Tumbler";
+				PRODUCT_BUNDLE_IDENTIFIER = yu.philip.Tumbler;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
