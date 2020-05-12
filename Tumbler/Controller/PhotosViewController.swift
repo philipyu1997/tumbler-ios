@@ -11,10 +11,10 @@ import AlamofireImage
 
 class PhotosViewController: UIViewController {
     
-    // Outlets
+    // MARK: - Outlets
     @IBOutlet weak var tableView: UITableView!
     
-    // Properties
+    // MARK: - Properties
     private let API_KEY = fetchFromPlist(forResource: "ApiKeys", forKey: "API_KEY")
     private var url: URL {
         guard let apiKey = API_KEY else {
@@ -37,7 +37,9 @@ class PhotosViewController: UIViewController {
         
     }
     
-    func fetchPost() {
+    // MARK: - Private Functions Section
+    
+    private func fetchPost() {
         
         // Network request snippet
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
@@ -45,60 +47,79 @@ class PhotosViewController: UIViewController {
         let task = session.dataTask(with: url) { (data, _, error) in
             if let error = error {
                 print(error.localizedDescription)
-            } else {
-                
-                do {
-                    if let data = data,
-                        let dataDictionary = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                        
-                        // Get the dictionary from the response key
-                        if let responseDictionary = dataDictionary["response"] as? [String: Any] {
-                            // Store the returned array of dictionaries in our posts property
-                            guard let post = responseDictionary["posts"] as? [[String: Any]] else {
-                                fatalError("Failed to get posts.")
-                            }
-                            
-                            self.posts = post
-                        }
-                    }
-                } catch {
-                }
-                
-                // Get the posts and store in posts property
-                
-                // Reload the table view
-                self.tableView.reloadData()
+            } else if let data = data,
+                let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                // Get the dictionary from the response key
+                let responseDictionary = dataDictionary["response"] as! [String: Any]
+                // Store the returned array of dictionaries in our posts property
+                let post = responseDictionary["posts"] as! [[String: Any]]
+                self.posts = post
             }
+            
+            // Get the posts and store in posts property
+            
+            // Reload the table view
+            self.tableView.reloadData()
         }
         
         task.resume()
         
     }
     
+    private func photoUrl(indexPath: IndexPath) -> URL? {
+        
+        let post = posts[indexPath.section]
+        
+        if let photos = post["photos"] as? [[String: Any]] {
+            let photo = photos[0]
+            let originalSize = photo["original_size"] as! [String: Any]
+            let urlString = originalSize["url"] as! String
+            let url = URL(string: urlString)
+            
+            return url
+        }
+        
+        return nil
+        
+    }
+    
+    private func convertDateFormatter(date: String) -> String {
+        
+        let dateString = date.replacingOccurrences(of: " GMT", with: "")
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateFormatter.timeZone = TimeZone(abbreviation: "GMT")
+        
+        guard let date = dateFormatter.date(from: dateString) else {
+            assert(false, "no date from string")
+            return ""
+        }
+        
+        dateFormatter.dateFormat = "MMM dd, yyyy, h:mm a"
+        dateFormatter.timeZone = TimeZone(abbreviation: "GMT")
+        let timeStamp = dateFormatter.string(from: date)
+        
+        return timeStamp
+        
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        guard let detailsViewController = segue.destination as? PhotoDetailsViewController else {
-            fatalError("Failed to set segue destination as PhotoDetailsViewController")
-        }
-        guard let cell = sender as? UITableViewCell else {
-            fatalError("Failed to set sender as UITableViewCell")
-        }
-        
-        // Find the selected photo
+        let detailsViewController = segue.destination as! PhotoDetailsViewController
+        let cell = sender as! UITableViewCell
         let indexPath = tableView.indexPath(for: cell)!
-        let post = posts[indexPath.row]
         
-        // Pass the selected photo to the details view controller
-        detailsViewController.post = post
-        tableView.deselectRow(at: indexPath, animated: true)
+        if let photoUrl = photoUrl(indexPath: indexPath) {
+            detailsViewController.photoUrl = photoUrl
+        }
         
     }
     
 }
 
-// MARK: Table View Data Source and Delegate Section
-
 extension PhotosViewController: UITableViewDataSource, UITableViewDelegate {
+    
+    // MARK: - UITableViewDataSource Section
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
@@ -114,26 +135,21 @@ extension PhotosViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoCell", for: indexPath) as? PhotoCell else {
-            fatalError("Failed to set cell as PhotoCell")
-        }
-        let post = posts[indexPath.section]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
         
-        if let photos = post["photos"] as? [[String: Any]] {
-            // Get the photo url
-            let photo = photos[0]
-            guard let originalSize = photo["original_size"] as? [String: Any] else {
-                fatalError("Failed to get original size photo")
-            }
-            guard let urlString = originalSize["url"] as? String else {
-                fatalError("Failed to get url for original size photo")
-            }
-            let url = URL(string: urlString)
-            
-            cell.photoImageView.af.setImage(withURL: url!)
+        if let photoUrl = photoUrl(indexPath: indexPath) {
+            cell.photoImageView.af.setImage(withURL: photoUrl)
         }
         
         return cell
+        
+    }
+    
+    // MARK: - UITableViewDelegate Section
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        tableView.deselectRow(at: indexPath, animated: true)
         
     }
     
@@ -141,28 +157,28 @@ extension PhotosViewController: UITableViewDataSource, UITableViewDelegate {
         
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: 50))
         headerView.backgroundColor = UIColor(white: 1, alpha: 0.9)
-
+        
+        // Add profile image
         let profileView = UIImageView(frame: CGRect(x: 10, y: 10, width: 30, height: 30))
+        
         profileView.clipsToBounds = true
         profileView.layer.cornerRadius = 15
         profileView.layer.borderColor = UIColor(white: 0.7, alpha: 0.8).cgColor
         profileView.layer.borderWidth = 1
-        
-        let dateView = UITextView(frame: CGRect(x: 50, y: 10, width: 300, height: 40))
-        dateView.clipsToBounds = true
-
-        // Set the avatar
         profileView.af.setImage(withURL: URL(string: "https://api.tumblr.com/v2/blog/humansofnewyork.tumblr.com/avatar")!)
         headerView.addSubview(profileView)
-
-        // Set the date
-        let post = posts[section]
         
-        if let date = post["date"] as? String {
-            dateView.text = date
-            headerView.addSubview(dateView)
-        }
-
+        // Add date of post
+        let post = posts[section]
+        let date = post["date"] as! String
+        let dateLabel = UILabel()
+        
+        dateLabel.font = UIFont.systemFont(ofSize: 14)
+        dateLabel.text = convertDateFormatter(date: date)
+        dateLabel.sizeToFit()
+        dateLabel.frame.origin = CGPoint(x: profileView.frame.maxX + 10, y: 50 / 2 - dateLabel.frame.height / 2)
+        headerView.addSubview(dateLabel)
+        
         return headerView
         
     }
@@ -170,12 +186,6 @@ extension PhotosViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
         return 50
-        
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        tableView.deselectRow(at: indexPath, animated: true)
         
     }
     
