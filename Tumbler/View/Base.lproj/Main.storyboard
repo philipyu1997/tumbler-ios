@@ -19,9 +19,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.20784313730000001" green="0.27450980390000002" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="separatorColor" red="0.20784313730000001" green="0.27450980390000002" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="sectionIndexBackgroundColor" red="0.20784313730000001" green="0.27450980390000002" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="sectionIndexTrackingBackgroundColor" red="0.20784313730000001" green="0.27450980390000002" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PhotoCell" rowHeight="300" id="0LW-py-HT3" customClass="PhotoCell" customModule="Tumbler" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="300"/>
@@ -204,6 +202,7 @@
                                 <color key="backgroundColor" red="0.20784313730000001" green="0.27450980390000002" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="JV4-sx-OFU" firstAttribute="top" secondItem="8E3-ne-JXL" secondAttribute="top" constant="44" id="EC7-x4-ery"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="JV4-sx-OFU" secondAttribute="trailing" constant="331" id="FJq-Sa-86q"/>
                                     <constraint firstAttribute="height" constant="88" id="Hms-ML-8JT"/>
                                     <constraint firstItem="JV4-sx-OFU" firstAttribute="leading" secondItem="8E3-ne-JXL" secondAttribute="leading" constant="20" id="nQY-zI-fd3"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="414" id="y2P-w2-FSH"/>

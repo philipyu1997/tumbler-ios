@@ -172,7 +172,7 @@ extension PhotosViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: 50))
-//        headerView.backgroundColor = UIColor()
+        headerView.backgroundColor = UIColor(red: (53 / 255), green: (70 / 255), blue: (92 / 255), alpha: 1.0)
         
         // Add profile image
         let profileView = UIImageView(frame: CGRect(x: 10, y: 10, width: 30, height: 30))
@@ -187,8 +187,8 @@ extension PhotosViewController: UITableViewDataSource, UITableViewDelegate {
         let dateLabel = UILabel()
         
         dateLabel.font = UIFont.systemFont(ofSize: 14)
-        dateLabel.textColor = .white
         dateLabel.text = Constants.convertDateFormatter(date: date)
+        dateLabel.textColor = .white
         dateLabel.sizeToFit()
         dateLabel.frame.origin = CGPoint(x: profileView.frame.maxX + 10, y: 50 / 2 - dateLabel.frame.height / 2)
         headerView.addSubview(dateLabel)
