@@ -8,9 +8,23 @@
 
 import UIKit
 
-struct Constants {
+struct Constant {
     
+    // MARK: - Properties
     static let avatarURL = URL(string: "https://api.tumblr.com/v2/blog/humansofnewyork.tumblr.com/avatar")!
+    static let apiKey = fetchFromPlist(forResource: "ApiKeys", forKey: "API_KEY")
+    
+    // MARK: - Functions
+    
+    static func fetchFromPlist(forResource resource: String, forKey key: String) -> String? {
+        
+        let filePath = Bundle.main.path(forResource: resource, ofType: "plist")
+        let plist = NSDictionary(contentsOfFile: filePath!)
+        let value = plist?.object(forKey: key) as? String
+        
+        return value
+        
+    }
     
     static func convertDateFormatter(date: String) -> String {
         
@@ -32,10 +46,14 @@ struct Constants {
         
     }
     
-    static func circularImageView(image: UIImageView) {
+}
+
+extension UIImageView {
+    
+    func makeCircular() {
         
-        image.layer.cornerRadius = (image.frame.size.width) / 2
-        image.clipsToBounds = true
+        self.layer.cornerRadius = self.frame.size.width / 2
+        self.clipsToBounds = true
         
     }
     

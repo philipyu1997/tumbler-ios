@@ -29,7 +29,17 @@ class FullScreenPhotoViewController: UIViewController {
 
     }
     
-    func handleGestures() {
+    // MARK: - IBAction Section
+    
+    @IBAction func dismissTapped(_ sender: UIButton) {
+        
+        self.dismiss(animated: true, completion: nil)
+        
+    }
+    
+    // MARK: - Private Function Section
+    
+    private func handleGestures() {
         
         // onPinch
         photoImageView.onPinch { (gesture) in
@@ -38,12 +48,6 @@ class FullScreenPhotoViewController: UIViewController {
             self.photoImageView.transform = self.photoImageView.transform.scaledBy(x: scale, y: scale)
             gesture.scale = 1
         }
-        
-    }
-    
-    @IBAction func dismissTapped(_ sender: UIButton) {
-        
-        self.dismiss(animated: true, completion: nil)
         
     }
     

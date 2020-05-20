@@ -10,7 +10,7 @@ import UIKit
 
 class PhotoCell: UITableViewCell {
 
-    // Outlets
+    // MARK: - Outlets
     @IBOutlet weak var photoImageView: UIImageView!
     
     override func awakeFromNib() {

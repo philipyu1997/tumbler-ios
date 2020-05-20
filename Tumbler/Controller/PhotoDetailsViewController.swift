@@ -31,6 +31,18 @@ class PhotoDetailsViewController: UIViewController {
         
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "presentFullScreenPhoto" {
+            let fullScreenViewController = segue.destination as! FullScreenPhotoViewController
+            
+            fullScreenViewController.photoUrl = photoUrl
+        }
+        
+    }
+    
+    // MARK: - Private Function Section
+    
     private func fetchPostDetails() {
         
         if let photoUrl = photoUrl,
@@ -39,9 +51,9 @@ class PhotoDetailsViewController: UIViewController {
             let parsedComment = parseString(string: caption)
             
             photoImageView.af.setImage(withURL: photoUrl)
-            Constants.circularImageView(image: profileImageView)
-            profileImageView.af.setImage(withURL: Constants.avatarURL)
-            dateLabel.text = Constants.convertDateFormatter(date: date)
+            profileImageView.makeCircular()
+            profileImageView.af.setImage(withURL: Constant.avatarURL)
+            dateLabel.text = Constant.convertDateFormatter(date: date)
             postTextView.text = parsedComment
         }
         
@@ -57,16 +69,6 @@ class PhotoDetailsViewController: UIViewController {
         
         photoImageView.onTap { (_) in
             self.performSegue(withIdentifier: "presentFullScreenPhoto", sender: nil)
-        }
-        
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if segue.identifier == "presentFullScreenPhoto" {
-            let fullScreenViewController = segue.destination as! FullScreenPhotoViewController
-            
-            fullScreenViewController.photoUrl = photoUrl
         }
         
     }

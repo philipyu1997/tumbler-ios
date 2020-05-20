@@ -15,7 +15,7 @@ class PhotosViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: - Properties
-    private let API_KEY = fetchFromPlist(forResource: "ApiKeys", forKey: "API_KEY")
+    private let apiKey = Constant.apiKey!
     private var posts: [[String: Any]] = []
     private var refreshControl = UIRefreshControl()
     private var isMoreDataLoading = false
@@ -47,13 +47,27 @@ class PhotosViewController: UIViewController {
         
     }
     
-    // MARK: - Private Functions Section
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        let detailsViewController = segue.destination as! PhotoDetailsViewController
+        let cell = sender as! UITableViewCell
+        let indexPath = tableView.indexPath(for: cell)!
+        
+        if let photoUrl = photoUrl(indexPath: indexPath) {
+            detailsViewController.photoUrl = photoUrl
+        }
+        
+        detailsViewController.post = posts[indexPath.section]
+        
+    }
+    
+    // MARK: - Private Function Section
     
     @objc private func fetchPost(with offset: Int, on pageNumber: Int) {
         
         print("on page \(pageNumber) with \(offset + 20) posts")
         
-        let url = URL(string: "https://api.tumblr.com/v2/blog/humansofnewyork.tumblr.com/posts/photo?api_key=\(API_KEY!)&offset=\(offset)&page_number=\(pageNumber)")
+        let url = URL(string: "https://api.tumblr.com/v2/blog/humansofnewyork.tumblr.com/posts/photo?api_key=\(apiKey)&offset=\(offset)&page_number=\(pageNumber)")
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         session.configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
         let task = session.dataTask(with: url!) { [weak self] (data, _, error) in
@@ -112,20 +126,6 @@ class PhotosViewController: UIViewController {
         
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        let detailsViewController = segue.destination as! PhotoDetailsViewController
-        let cell = sender as! UITableViewCell
-        let indexPath = tableView.indexPath(for: cell)!
-        
-        if let photoUrl = photoUrl(indexPath: indexPath) {
-            detailsViewController.photoUrl = photoUrl
-        }
-        
-        detailsViewController.post = posts[indexPath.section]
-        
-    }
-    
 }
 
 extension PhotosViewController: UITableViewDataSource, UITableViewDelegate {
@@ -177,8 +177,8 @@ extension PhotosViewController: UITableViewDataSource, UITableViewDelegate {
         // Add profile image
         let profileView = UIImageView(frame: CGRect(x: 10, y: 10, width: 30, height: 30))
         
-        Constants.circularImageView(image: profileView)
-        profileView.af.setImage(withURL: Constants.avatarURL)
+        profileView.makeCircular()
+        profileView.af.setImage(withURL: Constant.avatarURL)
         headerView.addSubview(profileView)
         
         // Add date of post
@@ -187,7 +187,7 @@ extension PhotosViewController: UITableViewDataSource, UITableViewDelegate {
         let dateLabel = UILabel()
         
         dateLabel.font = UIFont.systemFont(ofSize: 14)
-        dateLabel.text = Constants.convertDateFormatter(date: date)
+        dateLabel.text = Constant.convertDateFormatter(date: date)
         dateLabel.textColor = .white
         dateLabel.sizeToFit()
         dateLabel.frame.origin = CGPoint(x: profileView.frame.maxX + 10, y: 50 / 2 - dateLabel.frame.height / 2)
