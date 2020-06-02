@@ -4,8 +4,8 @@
 1. [Overview](#Overview)
 2. [Product Specs](#Product-Specs)
 3. [App Walkthrough](#App-Walkthrough)
-4. [APIs Used](#APIs-Used)
-5. [Open-Source libraries used](#Open-Source-libraries-used)
+4. [APIs](#APIs)
+5. [Libraries](#Libraries)
 6. [Credits](#Credits)
 
 ## Overview
@@ -27,13 +27,13 @@ Tumbler is an app that will allow users to view posts from the [Humans of New Yo
 
 Here's a GIF of how the app works:
 
-<img src="https://user-images.githubusercontent.com/35745973/81741234-1690b480-9453-11ea-93e5-9bae0a7e25a0.gif" width=250><br>
+<img src="https://user-images.githubusercontent.com/35745973/81741234-1690b480-9453-11ea-93e5-9bae0a7e25a0.gif" width=250>
 
-## APIs Used
+## APIs
 
 - [Tumblr API](https://www.tumblr.com/docs/en/api/v2) - Allows users to read and write Tumblr blog and post data, retrieve posts by tags, get user information, follow blogs and like posts. Data is formatted in JSON and support for JSONP is included.
 
-## Open-source libraries used
+## Libraries
 
 - [Alamofire](https://github.com/Alamofire/Alamofire) - An HTTP networking library written in Swift.
 - [AlamofireImage](https://github.com/Alamofire/AlamofireImage) - An image component library for Alamofire.
@@ -41,4 +41,4 @@ Here's a GIF of how the app works:
 
 ## Credits
 
->This is a companion project to CodePath's Professional iOS Course, check out the full course at [www.codepath.org](https://codepath.org/)
+>This is a companion project to CodePath's Professional iOS Course, check out the full course at [www.codepath.org](https://codepath.org/).
