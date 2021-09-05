@@ -27,7 +27,7 @@ Tumbler is an app that will allow users to view posts from the [Humans of New Yo
 
 Here's a GIF of how the app works:
 
-<img src="https://github.com/py415/app-resources/blob/master/ios/ios-tumbler.gif" width=250>
+<img src="https://raw.githubusercontent.com/py415/app-resources/master/ios/ios-tumbler.gif" width="250" />
 
 ## APIs
 
